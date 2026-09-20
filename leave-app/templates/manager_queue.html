@@ -1,0 +1,66 @@
+{% extends "base.html" %}
+{% block title %}Approval Queue - Leave Manager{% endblock %}
+{% block content %}
+<h1>Approval Queue</h1>
+
+<section>
+  <h2>Pending ({{ pending_requests | length }})</h2>
+  {% if not pending_requests %}
+    <p class="empty-state">No pending requests.</p>
+  {% else %}
+  <table>
+    <thead>
+      <tr>
+        <th>Employee</th><th>Type</th><th>Start</th><th>End</th><th>Days</th><th>Reason</th><th>Decision</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for r in pending_requests %}
+      <tr>
+        <td>{{ r.user.full_name }}</td>
+        <td>{{ r.leave_type | capitalize }}</td>
+        <td>{{ r.start_date }}</td>
+        <td>{{ r.end_date }}</td>
+        <td>{{ r.working_days }}</td>
+        <td>{{ r.reason or "-" }}</td>
+        <td>
+          <form method="POST" action="{{ url_for('manager_decide', request_id=r.id) }}" class="decision-form">
+            <input type="text" name="comment" placeholder="Comment (optional)" />
+            <button type="submit" name="decision" value="approved" class="btn-approve">Approve</button>
+            <button type="submit" name="decision" value="rejected" class="btn-reject">Reject</button>
+          </form>
+        </td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+  {% endif %}
+</section>
+
+<section>
+  <h2>Recent decisions</h2>
+  {% if not decided_requests %}
+    <p class="empty-state">No decisions yet.</p>
+  {% else %}
+  <table>
+    <thead>
+      <tr>
+        <th>Employee</th><th>Type</th><th>Start</th><th>End</th><th>Status</th><th>Comment</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for r in decided_requests %}
+      <tr>
+        <td>{{ r.user.full_name }}</td>
+        <td>{{ r.leave_type | capitalize }}</td>
+        <td>{{ r.start_date }}</td>
+        <td>{{ r.end_date }}</td>
+        <td><span class="status status-{{ r.status }}">{{ r.status }}</span></td>
+        <td>{{ r.manager_comment or "-" }}</td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+  {% endif %}
+</section>
+{% endblock %}

@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>{% block title %}Leave Manager{% endblock %}</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}" />
+</head>
+<body>
+  {% if current_user.is_authenticated %}
+  <header class="topbar">
+    <span class="brand">Leave Manager</span>
+    <nav>
+      {% if current_user.is_manager %}
+        <a href="{{ url_for('manager_queue') }}">Approval Queue</a>
+      {% else %}
+        <a href="{{ url_for('dashboard') }}">My Leave</a>
+      {% endif %}
+      <a href="{{ url_for('team_calendar') }}">Team Calendar</a>
+      <a href="{{ url_for('notifications') }}">Notifications</a>
+    </nav>
+    <span class="user-info">{{ current_user.full_name }} ({{ current_user.role }})
+      <a href="{{ url_for('logout') }}">Log out</a>
+    </span>
+  </header>
+  {% endif %}
+
+  <main class="container">
+    {% with messages = get_flashed_messages(with_categories=true) %}
+      {% if messages %}
+        <div class="flash-container">
+          {% for category, message in messages %}
+            <div class="flash flash-{{ category }}">{{ message }}</div>
+          {% endfor %}
+        </div>
+      {% endif %}
+    {% endwith %}
+
+    {% block content %}{% endblock %}
+  </main>
+</body>
+</html>

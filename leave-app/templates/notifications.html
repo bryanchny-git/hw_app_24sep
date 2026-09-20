@@ -1,0 +1,20 @@
+{% extends "base.html" %}
+{% block title %}Notifications - Leave Manager{% endblock %}
+{% block content %}
+<h1>Notifications</h1>
+<p class="subtitle">Simulated emails sent to you (no real email is sent by this app).</p>
+
+{% if not notifications %}
+  <p class="empty-state">No notifications yet.</p>
+{% else %}
+<ul class="notification-list">
+  {% for n in notifications %}
+  <li class="notification-item">
+    <div class="notification-subject">{{ n.subject }}</div>
+    <div class="notification-body">{{ n.body }}</div>
+    <div class="notification-time">{{ n.created_at.strftime('%Y-%m-%d %H:%M UTC') }}</div>
+  </li>
+  {% endfor %}
+</ul>
+{% endif %}
+{% endblock %}

@@ -1,0 +1,147 @@
+:root {
+  --bg: #f5f6f8;
+  --card-bg: #ffffff;
+  --text: #1f2430;
+  --muted: #6b7280;
+  --border: #e2e5eb;
+  --primary: #2563eb;
+  --success: #16a34a;
+  --error: #dc2626;
+  --pending: #d97706;
+}
+
+* { box-sizing: border-box; }
+
+body {
+  margin: 0;
+  font-family: -apple-system, "Segoe UI", Roboto, Arial, sans-serif;
+  background: var(--bg);
+  color: var(--text);
+}
+
+.topbar {
+  display: flex;
+  align-items: center;
+  gap: 24px;
+  padding: 12px 24px;
+  background: var(--card-bg);
+  border-bottom: 1px solid var(--border);
+}
+.topbar .brand { font-weight: 700; }
+.topbar nav { flex: 1; display: flex; gap: 16px; }
+.topbar nav a, .user-info a { color: var(--primary); text-decoration: none; }
+.topbar nav a:hover, .user-info a:hover { text-decoration: underline; }
+.user-info { color: var(--muted); font-size: 0.9em; }
+
+.container { max-width: 960px; margin: 0 auto; padding: 24px; }
+
+.login-card {
+  max-width: 360px;
+  margin: 80px auto;
+  background: var(--card-bg);
+  padding: 24px;
+  border-radius: 8px;
+  border: 1px solid var(--border);
+}
+.login-card .subtitle { color: var(--muted); font-size: 0.85em; }
+
+form { display: flex; flex-direction: column; gap: 8px; }
+label { font-size: 0.85em; color: var(--muted); margin-top: 8px; }
+input, select, textarea, button {
+  padding: 8px 10px;
+  border-radius: 6px;
+  border: 1px solid var(--border);
+  font-size: 1em;
+  font-family: inherit;
+}
+button {
+  background: var(--primary);
+  color: white;
+  border: none;
+  cursor: pointer;
+  margin-top: 12px;
+}
+button:hover { opacity: 0.9; }
+
+.flash-container { margin-bottom: 16px; }
+.flash { padding: 10px 14px; border-radius: 6px; margin-bottom: 8px; }
+.flash-error { background: #fee2e2; color: var(--error); }
+.flash-success { background: #dcfce7; color: var(--success); }
+
+.balance-cards { display: flex; gap: 16px; flex-wrap: wrap; margin-bottom: 32px; }
+.balance-card {
+  background: var(--card-bg);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 16px;
+  min-width: 180px;
+  flex: 1;
+}
+.balance-card h3 { margin: 0 0 8px; }
+.balance-card .big-number { font-size: 2em; font-weight: 700; margin: 0; }
+.balance-card .label { color: var(--muted); margin: 0 0 8px; font-size: 0.85em; }
+.balance-card .breakdown { list-style: none; padding: 0; margin: 0; font-size: 0.85em; color: var(--muted); }
+.balance-annual { border-top: 4px solid var(--primary); }
+.balance-medical { border-top: 4px solid var(--success); }
+.balance-unpaid { border-top: 4px solid var(--muted); }
+
+.apply-form {
+  background: var(--card-bg);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 16px;
+  margin-bottom: 32px;
+  max-width: 400px;
+}
+
+table { width: 100%; border-collapse: collapse; background: var(--card-bg); }
+th, td { text-align: left; padding: 8px 10px; border-bottom: 1px solid var(--border); font-size: 0.9em; }
+
+.status { padding: 2px 8px; border-radius: 12px; font-size: 0.8em; text-transform: capitalize; }
+.status-pending { background: #fef3c7; color: var(--pending); }
+.status-approved { background: #dcfce7; color: var(--success); }
+.status-rejected { background: #fee2e2; color: var(--error); }
+
+.decision-form { display: flex; gap: 6px; align-items: center; }
+.decision-form input { flex: 1; margin: 0; padding: 6px 8px; }
+.decision-form button { margin: 0; padding: 6px 10px; font-size: 0.85em; }
+.btn-approve { background: var(--success); }
+.btn-reject { background: var(--error); }
+
+.empty-state { color: var(--muted); }
+
+.calendar-nav {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 12px;
+}
+.calendar-title { font-weight: 700; }
+.calendar-grid { table-layout: fixed; }
+.calendar-grid th { text-align: center; background: var(--card-bg); }
+.calendar-grid td { vertical-align: top; height: 80px; padding: 4px 6px; }
+.calendar-grid .empty-day { background: #f0f1f3; }
+.calendar-grid .day-number { font-weight: 600; font-size: 0.85em; color: var(--muted); }
+.calendar-grid .leave-chip {
+  background: #e0e7ff;
+  color: var(--primary);
+  border-radius: 4px;
+  font-size: 0.75em;
+  padding: 1px 4px;
+  margin-top: 2px;
+}
+.calendar-grid td.overlap { background: #ffedd5; }
+.calendar-grid td.overlap .leave-chip { background: #fed7aa; color: #9a3412; }
+.legend { color: var(--muted); font-size: 0.85em; }
+
+.notification-list { list-style: none; padding: 0; display: flex; flex-direction: column; gap: 10px; }
+.notification-item {
+  background: var(--card-bg);
+  border: 1px solid var(--border);
+  border-left: 4px solid var(--primary);
+  border-radius: 6px;
+  padding: 12px 14px;
+}
+.notification-subject { font-weight: 600; margin-bottom: 4px; }
+.notification-body { white-space: pre-line; color: var(--text); font-size: 0.9em; margin-bottom: 6px; }
+.notification-time { color: var(--muted); font-size: 0.8em; }

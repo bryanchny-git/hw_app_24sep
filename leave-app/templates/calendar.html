@@ -1,0 +1,38 @@
+{% extends "base.html" %}
+{% block title %}Team Calendar - Leave Manager{% endblock %}
+{% block content %}
+<h1>Team Calendar</h1>
+
+<div class="calendar-nav">
+  <a href="{{ url_for('team_calendar', year=prev_year, month=prev_month) }}">&laquo; Prev</a>
+  <span class="calendar-title">{{ month_name }} {{ year }}</span>
+  <a href="{{ url_for('team_calendar', year=next_year, month=next_month) }}">Next &raquo;</a>
+</div>
+
+<table class="calendar-grid">
+  <thead>
+    <tr>
+      <th>Mon</th><th>Tue</th><th>Wed</th><th>Thu</th><th>Fri</th><th>Sat</th><th>Sun</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for week in weeks %}
+    <tr>
+      {% for day in week %}
+        {% if day == 0 %}
+          <td class="empty-day"></td>
+        {% else %}
+          <td class="{{ 'overlap' if day_entries.get(day, []) | length > 1 else '' }}">
+            <div class="day-number">{{ day }}</div>
+            {% for name in day_entries.get(day, []) %}
+              <div class="leave-chip">{{ name }}</div>
+            {% endfor %}
+          </td>
+        {% endif %}
+      {% endfor %}
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
+<p class="legend">Days highlighted in orange have overlapping approved leave (2+ people out).</p>
+{% endblock %}
