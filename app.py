@@ -42,10 +42,24 @@ DEFAULT_DAYS_BY_TYPE = {
 
 def create_app():
     app = Flask(__name__)
-    app.config["SECRET_KEY"] = "dev-secret-key-change-in-production"
-    app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///" + os.path.join(
-        BASE_DIR, "leave.db"
+    app.config["SECRET_KEY"] = os.environ.get(
+        "SECRET_KEY", "dev-secret-key-change-in-production"
     )
+
+    database_url = os.environ.get("DATABASE_URL")
+    if database_url:
+        # Vercel/Neon/Render Postgres URLs commonly use the "postgres://" scheme,
+        # but SQLAlchemy's psycopg driver requires "postgresql://".
+        if database_url.startswith("postgres://"):
+            database_url = database_url.replace("postgres://", "postgresql://", 1)
+        app.config["SQLALCHEMY_DATABASE_URI"] = database_url
+    else:
+        # Local dev fallback: a SQLite file next to this script. Not usable on
+        # Vercel, whose filesystem is read-only outside /tmp — set DATABASE_URL
+        # there to point at a real Postgres database instead.
+        app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///" + os.path.join(
+            BASE_DIR, "leave.db"
+        )
     app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
 
     db.init_app(app)
